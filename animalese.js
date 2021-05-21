@@ -2,6 +2,11 @@
 // (C) 2014 Josh Simmons
 // http://github.com/acedio/animalese.js
 
+var letterSecsForFile = {
+  "animalese.wav": 0.15,
+  "borges.wav": 0.32,
+};
+
 var Animalese = function (letters_file, onload) {
   this.Animalese = function (script, shorten, pitch, bpm) {
     function shortenWord(str) {
@@ -23,11 +28,11 @@ var Animalese = function (letters_file, onload) {
     var data = [];
 
     var sample_freq = 44100;
-    var library_letter_secs = 0.15;
+    var library_letter_secs = letterSecsForFile[letters_file];
     var library_samples_per_letter = Math.floor(
       library_letter_secs * sample_freq
     );
-    var output_letter_secs = 0.15; //0.075;
+    var output_letter_secs = letterSecsForFile[letters_file]; //0.075;
     var output_samples_per_letter = Math.floor(
       output_letter_secs * sample_freq
     );
