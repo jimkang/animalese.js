@@ -3,7 +3,7 @@
 // http://github.com/acedio/animalese.js
 
 var Animalese = function (letters_file, onload) {
-  this.Animalese = function (script, shorten, pitch) {
+  this.Animalese = function (script, shorten, pitch, bpm) {
     function shortenWord(str) {
       if (str.length > 1) {
         return str[0] + str[str.length - 1];
@@ -31,23 +31,29 @@ var Animalese = function (letters_file, onload) {
     var output_samples_per_letter = Math.floor(
       output_letter_secs * sample_freq
     );
+    const samples_per_beat = Math.floor((60 / +bpm) * sample_freq);
 
+    // Write out a beat's worth of samples each iteration.
     for (var c_index = 0; c_index < processed_script.length; c_index++) {
       var c = processed_script.toUpperCase()[c_index];
+      const base_offset = c_index * samples_per_beat;
       if (c >= "A" && c <= "Z") {
         var library_letter_start =
           library_samples_per_letter * (c.charCodeAt(0) - "A".charCodeAt(0));
 
         for (var i = 0; i < output_samples_per_letter; i++) {
-          data[c_index * output_samples_per_letter + i] = this.letter_library[
+          data[base_offset + i] = this.letter_library[
             44 + library_letter_start + Math.floor(i * pitch)
           ];
         }
       } else {
         // non pronouncable character or space
         for (var i = 0; i < output_samples_per_letter; i++) {
-          data[c_index * output_samples_per_letter + i] = 127;
+          data[base_offset + i] = 127;
         }
+      }
+      for (var j = output_samples_per_letter; j < samples_per_beat; ++j) {
+        data[base_offset + j] = 127;
       }
     }
 

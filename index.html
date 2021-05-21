@@ -35,7 +35,9 @@ var synth = new Animalese('animalese.wav', function() {
 function generateWav() {
     return synth.Animalese(document.getElementById("text").value,
                            document.getElementById("shorten").checked,
-                           document.getElementById("pitch").value).dataURI;
+                           document.getElementById("pitch").value,
+                           document.getElementById("bpm").value)
+      .dataURI;
 }
 
 function preview() {
@@ -56,6 +58,7 @@ function download() {
     <textarea id="text" rows"4" cols="50">Testing out animalese.js. Did it work?</textarea><br/>
     <label>Shorten words<input id="shorten" type="checkbox"/></label><br/>
     <label>Grump<input id="pitch" type="range" min="0.2" max="2.0" value="1.0" step="0.1"/>Isabelle</label><br/>
+    <label>BPM/letter sounds per minute<input id="bpm" type="number" min="1" max="1000" value="120"/></label><br/>
     <button id="preview" type="button" disabled="true" onclick="preview()">Preview!</button>
     <button id="download" type="button" disabled="false" onclick="download()">Download!</button>
 </body>
