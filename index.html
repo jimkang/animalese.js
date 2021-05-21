@@ -12,11 +12,21 @@
     <textarea id="text" rows"4" cols="50">Testing out animalese.js. Did it work?</textarea><br/>
     <label>Shorten words<input id="shorten" type="checkbox"/></label><br/>
     <label>Grump<input id="pitch" type="range" min="0.2" max="2.0" value="1.0" step="0.1"/>Isabelle</label><br/>
-    <label>BPM/letter sounds per minute<input id="bpm" type="number" min="1" max="1000" value="120"/></label><br/>
+    <label>Letter sounds per minute<input id="bpm" type="number" min="1" max="1000" value="120"/></label><br/>
+    <label>Letter sounds source</label>
+    <select id="source">
+      <option value="animalese.wav">Animalese</option>
+      <option value="borges.wav">Borges</option>
+    </select>
+    <br />
     <button id="preview" type="button" disabled="true" onclick="preview()">Preview!</button>
-    <button id="download" type="button" disabled="false" onclick="download()">Download!</button>
+    <button id="download" type="button" disabled="true" onclick="download()">Download!</button>
 
-<script>
+<script defer>
+var synth;
+document.getElementById('source').addEventListener('blur', onSourceChange);
+onSourceChange();
+
 function dataURItoBlob(dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   var byteString;
@@ -37,10 +47,12 @@ function dataURItoBlob(dataURI) {
   return new Blob([ia], {type:mimeString});
 }
 
-var synth = new Animalese('animalese.wav', function() {
-  document.getElementById("preview").disabled = false;
-  document.getElementById("download").disabled = false;
-});
+function onSourceChange() {
+  synth = new Animalese(document.getElementById('source').value, function() {
+    document.getElementById("preview").disabled = false;
+    document.getElementById("download").disabled = false;
+  });
+}
 
 function generateWav() {
     return synth.Animalese(document.getElementById("text").value,
@@ -62,5 +74,6 @@ function download() {
 }
 
 </script>
+
 </body>
 </html>
