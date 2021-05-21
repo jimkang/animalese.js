@@ -27,11 +27,14 @@ var Animalese = function (letters_file, onload) {
     var library_samples_per_letter = Math.floor(
       library_letter_secs * sample_freq
     );
-    var output_letter_secs = 0.075;
+    var output_letter_secs = 0.15; //0.075;
     var output_samples_per_letter = Math.floor(
       output_letter_secs * sample_freq
     );
     const samples_per_beat = Math.floor((60 / +bpm) * sample_freq);
+    if (output_samples_per_letter > samples_per_beat) {
+      output_samples_per_letter = samples_per_beat;
+    }
 
     // Write out a beat's worth of samples each iteration.
     for (var c_index = 0; c_index < processed_script.length; c_index++) {
